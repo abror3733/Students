@@ -1,16 +1,39 @@
 
-import React from 'react'
+import React, { useState } from 'react'
 import avatarImg from "./assets/Images/avatar.png"
 import studentsIcon from "././assets/Images/students-icon.svg"
 import logoutIcon from "././assets/Images/logout-icon.svg"
 import playIcon from "././assets/Images/play.svg"
 import belIcon from "././assets/Images/bell.svg"
 import search from "././assets/Images/search.svg"
-import sortIcon from "././assets/Images/sort.svg"
-import StudentList from './components/StudentList/StudentList'
+import { Route, Routes } from 'react-router-dom'
+import HomePage from './pages/Auth/HomePage/HomePage'
+import AddStudent from './pages/Auth/AddStudent/AddStudent'
+import SinglePage from './pages/Auth/SinglePage/SinglePage'
 
 
 function Authentication() {
+
+  const [student,setStudent] = useState(JSON.parse(window.localStorage.getItem("student"))||[
+    {
+      id:1,
+      avatarImg:avatarImg,
+      name:"Doniyor",
+      email:"doniyor@gmail.com",
+      phoneNumber:"+998951234567",
+      enrollNumber:"1234567",
+      createdAt:"12-04-2024",
+    },{
+      id:2,
+      avatarImg:avatarImg,
+      name:"Nodir",
+      email:"nodir@gmail.com",
+      phoneNumber:"+998951234567",
+      enrollNumber:"1234567",
+      createdAt:"12-04-2024",
+    }
+  ])
+ window.localStorage.setItem("student" ,JSON.stringify(student))
   return (
     <div className="container mx-auto flex bg-[#F8F8F8]">
       <div className="flex flex-col justify-between pb-[20px] overflow-y-auto bg-[#F2EAE1] w-[22%] h-[100vh] pt-[18px] px-[35px]">
@@ -47,32 +70,12 @@ function Authentication() {
           </div>
         </div>
        <div>
-       <div className="flex items-center justify-between px-[30px] pt-[12px] pb-[15px]">
-          <h2 className="text-[22px] font-bold">Students List</h2>
-          <div className="flex space-x-[30px] items-center">
-            <button>
-              <img src={sortIcon} alt="sort-icon" width={14} height={22} />
-            </button>
-            <button className="w-[189px] rounded-md pt-[14px] pb-[12px] text-white text-[14px] bg-[#FEAF00] hover:opacity-70">
-              ADD NEW STUDENT
-            </button>
-          </div>
-        </div>
-        <span className="bg-[#E5E5E5] w-[95%] mx-auto h-[3px] px-[30px] block"></span>
        </div>
-       <div className="py-[21px] px-[70px] flex items-center justify-evenly">
-        <span className="text-[#ACACAC]">Name</span>
-        <span className="text-[#ACACAC]">Email</span>
-        <span className="text-[#ACACAC] ml-[90px]">Phone</span>
-        <span className="text-[#ACACAC]">Enroll Number</span>
-        <span className="text-[#ACACAC]">Date  admission</span>
-       </div>
-       <div className="px-[30px] flex flex-col space-y-2">
-        <StudentList/>
-        <StudentList/>
-        <StudentList/>
-        <StudentList/>
-       </div>
+       <Routes>
+          <Route path='/' element={<HomePage student={student} setStudent={setStudent} />}/>
+          <Route path='/add' element={<AddStudent student={student} setStudent={setStudent}/>}/>
+          <Route path='/student' element={<SinglePage/>}/>
+        </Routes>
       </div>
     </div>
   )
